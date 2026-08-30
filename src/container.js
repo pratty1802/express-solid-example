@@ -8,6 +8,7 @@ import { SmsChannel } from './notifications/SmsChannel.js';
 import { NotificationService } from './notifications/NotificationService.js';
 import { CreditCardProcessor } from './payment/CreditCardProcessor.js';
 import { PayPalProcessor } from './payment/PayPalProcessor.js';
+import { StripeProcessor } from './payment/StripeProcessor.js';
 import { PaymentService } from './payment/PaymentService.js';
 import { OrderService } from './services/OrderService.js';
 import { OrderController } from './controllers/OrderController.js';
@@ -24,6 +25,7 @@ export function createContainer() {
     new Map([
       ['credit_card', new CreditCardProcessor()],
       ['paypal', new PayPalProcessor()],
+      ['stripe', new StripeProcessor()],
     ])
   );
 

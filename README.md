@@ -72,6 +72,19 @@ curl -X POST http://localhost:3000/api/orders \
   }'
 ```
 
+**Place an order (Stripe)**
+
+```bash
+curl -X POST http://localhost:3000/api/orders \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customer": { "id": "c3", "name": "Carol", "contact": "carol@example.com" },
+    "items": [{ "name": "Webcam", "price": 89.00, "quantity": 1 }],
+    "paymentProvider": "stripe",
+    "paymentDetails": { "paymentMethodId": "pm_1234567890abcdef" }
+  }'
+```
+
 **List orders**
 
 ```bash
@@ -80,11 +93,13 @@ curl http://localhost:3000/api/orders
 
 ## Extending Without Breaking SOLID
 
-### Add Stripe payments (Open/Closed)
+### Add another payment provider (Open/Closed)
 
-1. Create `src/payment/StripeProcessor.js` implementing `IPaymentProcessor`
-2. Register in `container.js`: `['stripe', new StripeProcessor()]`
-3. Clients send `"paymentProvider": "stripe"` — `OrderService` stays unchanged
+1. Create `src/payment/<Provider>Processor.js` implementing `IPaymentProcessor`
+2. Register in `container.js`: `['<provider>', new <Provider>Processor()]`
+3. Clients send `"paymentProvider": "<provider>"` — `OrderService` stays unchanged
+
+Stripe is already wired up as a reference implementation.
 
 ### Swap in PostgreSQL (Dependency Inversion)
 
